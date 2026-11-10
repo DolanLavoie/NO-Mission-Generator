@@ -5,6 +5,8 @@ import re
 from pathlib import Path
 from math import floor
 
+import random_mission_generator
+
 
 # ============================================================
 # CONFIGURATION
@@ -30,32 +32,26 @@ AIRCRAFT = [
     {"name": "Cricket", "key": "COIN", "tier": 0},
     {"name": "Cavalier", "key": "Aryx_PropAttacker1", "tier": 0},
     {"name": "Knockout", "key": "Aryx_LightHelicopter1", "tier": 0},
-
     {"name": "Compass", "key": "trainer", "tier": 1},
     {"name": "Kukri", "key": "AH31_Kukri", "tier": 1},
     {"name": "Vagrant", "key": "VTOLTrainer1", "tier": 1},
     {"name": "Ibis", "key": "UtilityHelo1", "tier": 1},
     {"name": "Chicane", "key": "AttackHelo1", "tier": 1},
-
     {"name": "Shrike", "key": "Aryx_LightFighter1", "tier": 2},
     {"name": "Brawler", "key": "CAS1", "tier": 2},
     {"name": "Kestrel", "key": "kestrel", "tier": 2},
     {"name": "Tarantula", "key": "QuadVTOL1", "tier": 2},
-
     {"name": "King Viper", "key": "Aryx_F16M_KingViper", "tier": 3},
     {"name": "Agni", "key": "1509_palafighter1", "tier": 3},
     {"name": "Revoker", "key": "Fighter1", "tier": 3},
     {"name": "Vortex", "key": "SmallFighter1", "tier": 3},
-
     {"name": "Ifrit", "key": "Multirole1", "tier": 4},
     {"name": "Ternion", "key": "P_Trisurface1", "tier": 4},
     {"name": "Medusa", "key": "EW1", "tier": 4},
     {"name": "Chimera", "key": "Aryx_CargoPlane1", "tier": 4},
-
     {"name": "Strike Raptor", "key": "Aryx_F22E_StrikeRaptor", "tier": 5},
     {"name": "Darkreach", "key": "Darkreach", "tier": 5},
     {"name": "Eclipse", "key": "Aryx_Interceptor1", "tier": 5},
-
     {"name": "Alkyon", "key": "FastBomber1", "tier": 6},
 ]
 
@@ -66,19 +62,19 @@ AIRCRAFT = [
 
 STARTING_MUNITIONS = [
     "PAB-125",
+    "PAB-250",
+    "Kingpin",
     "Lynchpin",
+    "IRM-S1",
     "IRM-S2",
 ]
 
 UNLOCKABLE_MUNITIONS = [
-    "PAB-250",
     "GPO-500",
-    "IRM-S1",
     "PAB-80LR",
     "AT-145",
     "AGM-48",
     "Eyeball Mk.II",
-    "Kingpin",
     "ATP-1",
     "PAB-250LR",
     "AGM-68",
@@ -113,24 +109,16 @@ UNLOCKABLE_MUNITIONS = [
 # GENERAL FUNCTIONS
 # ============================================================
 
+
 def get_aircraft(key):
-    return next(
-        (plane for plane in AIRCRAFT if plane["key"] == key),
-        None
-    )
+    return next((plane for plane in AIRCRAFT if plane["key"] == key), None)
 
 
 def get_player_names():
     while True:
-        raw = input(
-            "Enter player names separated by commas: "
-        )
+        raw = input("Enter player names separated by commas: ")
 
-        names = [
-            name.strip()
-            for name in raw.split(",")
-            if name.strip()
-        ]
+        names = [name.strip() for name in raw.split(",") if name.strip()]
 
         if not names:
             print("At least one player is required.")
@@ -155,8 +143,7 @@ def get_save_path(filename):
 
     if not re.fullmatch(r"[A-Za-z0-9_-]+", filename):
         raise ValueError(
-            "Save names can only contain letters, numbers, "
-            "underscores, and hyphens."
+            "Save names can only contain letters, numbers, underscores, and hyphens."
         )
 
     return SAVE_FOLDER / f"{filename}.json"
@@ -180,13 +167,11 @@ def load_game(path):
 # BUDGET MANAGEMENT
 # ============================================================
 
+
 def calculate_next_budget(current_budget, player_count):
     per_player_budget = current_budget // player_count
 
-    next_per_player = floor(
-        per_player_budget * BUDGET_MULTIPLIER
-        + BUDGET_INCREASE
-    )
+    next_per_player = floor(per_player_budget * BUDGET_MULTIPLIER + BUDGET_INCREASE)
 
     return next_per_player * player_count
 
@@ -208,6 +193,7 @@ def get_current_enemy_budget(save_name):
 # SAVE CREATION
 # ============================================================
 
+
 def create_new_save(save_name):
     path = get_save_path(save_name)
 
@@ -219,25 +205,15 @@ def create_new_save(save_name):
 
     save = {
         "mission_number": 1,
-
-        "current_enemy_budget": (
-            STARTING_BUDGET * len(names)
-        ),
-
+        "current_enemy_budget": (STARTING_BUDGET * len(names)),
         "player_count": len(names),
-
-        "players": {}
+        "players": {},
     }
 
     for name in names:
         save["players"][name] = {
-            "aircraft": [
-                plane["key"]
-                for plane in AIRCRAFT
-                if plane["tier"] == 0
-            ],
-
-            "munitions": STARTING_MUNITIONS.copy()
+            "aircraft": [plane["key"] for plane in AIRCRAFT if plane["tier"] == 0],
+            "munitions": STARTING_MUNITIONS.copy(),
         }
 
     save_game(save, path)
@@ -245,15 +221,13 @@ def create_new_save(save_name):
     print("\nSave created successfully.")
     print(f"Save: {path}")
     print(f"Players: {len(names)}")
-    print(
-        f"Starting enemy budget: "
-        f"${save['current_enemy_budget']}m"
-    )
+    print(f"Starting enemy budget: ${save['current_enemy_budget']}m")
 
 
 # ============================================================
 # AIRCRAFT LOSS MANAGEMENT
 # ============================================================
+
 
 def display_aircraft(aircraft):
     if not aircraft:
@@ -288,18 +262,12 @@ def select_aircraft_losses(player):
             return
 
         try:
-            selections = [
-                int(value.strip())
-                for value in raw.split(",")
-            ]
+            selections = [int(value.strip()) for value in raw.split(",")]
 
             if len(set(selections)) != len(selections):
                 raise ValueError
 
-            if any(
-                number < 1 or number > len(aircraft)
-                for number in selections
-            ):
+            if any(number < 1 or number > len(aircraft) for number in selections):
                 raise ValueError
 
             break
@@ -321,27 +289,20 @@ def select_aircraft_losses(player):
 # REWARD GENERATION
 # ============================================================
 
+
 def generate_aircraft_reward(player):
     aircraft = player["aircraft"]
 
     owned_planes = [
-        get_aircraft(key)
-        for key in aircraft
-        if get_aircraft(key) is not None
+        get_aircraft(key) for key in aircraft if get_aircraft(key) is not None
     ]
 
     if owned_planes:
-        highest_tier = max(
-            plane["tier"] for plane in owned_planes
-        )
+        highest_tier = max(plane["tier"] for plane in owned_planes)
     else:
         highest_tier = 0
 
-    eligible = [
-        plane
-        for plane in AIRCRAFT
-        if plane["tier"] <= highest_tier + 1
-    ]
+    eligible = [plane for plane in AIRCRAFT if plane["tier"] <= highest_tier + 1]
 
     return random.choice(eligible)
 
@@ -353,10 +314,7 @@ def generate_munition_rewards(player):
         if munition not in player["munitions"]
     ]
 
-    return random.sample(
-        unowned,
-        min(3, len(unowned))
-    )
+    return random.sample(unowned, min(3, len(unowned)))
 
 
 def select_reward(player):
@@ -368,36 +326,23 @@ def select_reward(player):
     rewards = []
 
     for munition in munitions:
-        rewards.append({
-            "type": "munition",
-            "value": munition
-        })
+        rewards.append({"type": "munition", "value": munition})
 
-    rewards.append({
-        "type": "aircraft",
-        "value": aircraft["key"]
-    })
+    rewards.append({"type": "aircraft", "value": aircraft["key"]})
 
     for index, reward in enumerate(rewards, start=1):
         if reward["type"] == "munition":
-            description = (
-                f"Munition unlock: {reward['value']}"
-            )
+            description = f"Munition unlock: {reward['value']}"
         else:
             plane = get_aircraft(reward["value"])
 
-            description = (
-                f"Aircraft: {plane['name']} "
-                f"(Tier {plane['tier']})"
-            )
+            description = f"Aircraft: {plane['name']} (Tier {plane['tier']})"
 
         print(f"  {index}. {description}")
 
     while True:
         try:
-            selection = int(
-                input("\nSelect your reward: ")
-            )
+            selection = int(input("\nSelect your reward: "))
 
             if 1 <= selection <= len(rewards):
                 break
@@ -425,17 +370,15 @@ def select_reward(player):
 # MISSION END
 # ============================================================
 
+
 def process_mission_end(save, path):
     print("\n================================")
     print("         MISSION END")
     print("================================")
 
-    print(
-        f"Mission {save['mission_number']} complete."
-    )
+    print(f"Mission {save['mission_number']} complete.")
 
     for name, player in save["players"].items():
-
         print(f"\n================================")
         print(f"PLAYER: {name}")
         print("================================")
@@ -458,11 +401,22 @@ def process_mission_end(save, path):
     save["mission_number"] += 1
 
     save["current_enemy_budget"] = calculate_next_budget(
-        save["current_enemy_budget"],
-        save["player_count"]
+        save["current_enemy_budget"], save["player_count"]
     )
 
     save_game(save, path)
+
+    # Generate the next mission using the newly calculated enemy budget.
+    print("\n================================")
+    print("      GENERATING NEXT MISSION")
+    print("================================")
+
+    try:
+        random_mission_generator.generate_mission(
+            save["current_enemy_budget"], overwrite=True, verbose=True
+        )
+    except Exception as error:
+        print(f"Failed to generate the next mission: {error}")
 
     continue_save(save_name=path.stem)
 
@@ -470,6 +424,7 @@ def process_mission_end(save, path):
 # ============================================================
 # SAVE CONTINUATION
 # ============================================================
+
 
 def continue_save(save_name):
     path = get_save_path(save_name)
@@ -486,10 +441,7 @@ def continue_save(save_name):
 
     print(f"Mission: {save['mission_number']}")
 
-    print(
-        f"Current enemy budget: "
-        f"${save['current_enemy_budget']}m"
-    )
+    print(f"Current enemy budget: ${save['current_enemy_budget']}m")
 
     print(f"Players: {save['player_count']}")
 
@@ -520,45 +472,27 @@ def continue_save(save_name):
 # COMMAND LINE INTERFACE
 # ============================================================
 
+
 def main():
-    parser = argparse.ArgumentParser(
-        description="Nuclear Option Campaign Save Manager"
-    )
+    parser = argparse.ArgumentParser(description="Nuclear Option Campaign Save Manager")
 
-    subparsers = parser.add_subparsers(
-        dest="command",
-        required=True
-    )
+    subparsers = parser.add_subparsers(dest="command", required=True)
 
-    new_parser = subparsers.add_parser(
-        "new",
-        help="Create a new campaign save."
-    )
+    new_parser = subparsers.add_parser("new", help="Create a new campaign save.")
 
-    new_parser.add_argument(
-        "save_name",
-        help="Name of the new save file."
-    )
+    new_parser.add_argument("save_name", help="Name of the new save file.")
 
     continue_parser = subparsers.add_parser(
-        "continue",
-        help="Continue an existing campaign."
+        "continue", help="Continue an existing campaign."
     )
 
-    continue_parser.add_argument(
-        "save_name",
-        help="Name of the save file to load."
-    )
+    continue_parser.add_argument("save_name", help="Name of the save file to load.")
 
     budget_parser = subparsers.add_parser(
-        "budget",
-        help="Display the current enemy budget."
+        "budget", help="Display the current enemy budget."
     )
 
-    budget_parser.add_argument(
-        "save_name",
-        help="Name of the save file."
-    )
+    budget_parser.add_argument("save_name", help="Name of the save file.")
 
     args = parser.parse_args()
 

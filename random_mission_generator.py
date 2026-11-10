@@ -6,8 +6,7 @@ from pathlib import Path
 
 # Change this to choose where the RandomMission folder is created.
 # By default, it is created beside this Python script.
-# OUTPUT_PATH = Path(__file__).resolve().parent
-OUTPUT_PATH =  r"C:\Users\tonyl\AppData\LocalLow\Shockfront\NuclearOption\Missions"
+OUTPUT_PATH = Path(__file__).resolve().parent
 
 MISSION_FOLDER_NAME = "RandomMission"
 MISSION_FILE_NAME = "RandomMission.json"
@@ -17,29 +16,104 @@ META_FILE_NAME = "meta.json"
 AIRCRAFT = [
     {"name": "MiG-15", "price": Decimal("2.5"), "size": "Small", "key": "Aryx_MiG-15"},
     {"name": "Cricket", "price": Decimal("11.5"), "size": "Small", "key": "COIN"},
-    {"name": "Cavalier", "price": Decimal("12.0"), "size": "Small", "key": "Aryx_PropAttacker1"},
-    {"name": "Knockout", "price": Decimal("16.0"), "size": "Small", "key": "Aryx_LightHelicopter1"},
+    {
+        "name": "Cavalier",
+        "price": Decimal("12.0"),
+        "size": "Small",
+        "key": "Aryx_PropAttacker1",
+    },
+    {
+        "name": "Knockout",
+        "price": Decimal("16.0"),
+        "size": "Small",
+        "key": "Aryx_LightHelicopter1",
+    },
     {"name": "Compass", "price": Decimal("21.8"), "size": "Small", "key": "trainer"},
     {"name": "Kukri", "price": Decimal("24.0"), "size": "Small", "key": "AH31_Kukri"},
-    {"name": "Vagrant", "price": Decimal("28.9"), "size": "Small", "key": "VTOLTrainer1"},
+    {
+        "name": "Vagrant",
+        "price": Decimal("28.9"),
+        "size": "Small",
+        "key": "VTOLTrainer1",
+    },
     {"name": "Ibis", "price": Decimal("29.5"), "size": "Small", "key": "UtilityHelo1"},
-    {"name": "Chicane", "price": Decimal("31.0"), "size": "Small", "key": "AttackHelo1"},
-    {"name": "Shrike", "price": Decimal("35.0"), "size": "Small", "key": "Aryx_LightFighter1"},
+    {
+        "name": "Chicane",
+        "price": Decimal("31.0"),
+        "size": "Small",
+        "key": "AttackHelo1",
+    },
+    {
+        "name": "Shrike",
+        "price": Decimal("35.0"),
+        "size": "Small",
+        "key": "Aryx_LightFighter1",
+    },
     {"name": "Brawler", "price": Decimal("36.0"), "size": "Small", "key": "CAS1"},
     {"name": "Kestrel", "price": Decimal("47.0"), "size": "Small", "key": "kestrel"},
-    {"name": "Tarantula", "price": Decimal("118.0"), "size": "Small", "key": "QuadVTOL1"},
-    {"name": "King Viper", "price": Decimal("58.0"), "size": "Small", "key": "Aryx_F16M_KingViper"},
-    {"name": "Agni", "price": Decimal("62.5"), "size": "Medium", "key": "1509_palafighter1"},
+    {
+        "name": "Tarantula",
+        "price": Decimal("118.0"),
+        "size": "Small",
+        "key": "QuadVTOL1",
+    },
+    {
+        "name": "King Viper",
+        "price": Decimal("58.0"),
+        "size": "Small",
+        "key": "Aryx_F16M_KingViper",
+    },
+    {
+        "name": "Agni",
+        "price": Decimal("62.5"),
+        "size": "Medium",
+        "key": "1509_palafighter1",
+    },
     {"name": "Revoker", "price": Decimal("65.0"), "size": "Medium", "key": "Fighter1"},
-    {"name": "Vortex", "price": Decimal("90.0"), "size": "Medium", "key": "SmallFighter1"},
+    {
+        "name": "Vortex",
+        "price": Decimal("90.0"),
+        "size": "Medium",
+        "key": "SmallFighter1",
+    },
     {"name": "Ifrit", "price": Decimal("126.0"), "size": "Medium", "key": "Multirole1"},
-    {"name": "Ternion", "price": Decimal("136.0"), "size": "Large", "key": "P_Trisurface1"},
+    {
+        "name": "Ternion",
+        "price": Decimal("136.0"),
+        "size": "Large",
+        "key": "P_Trisurface1",
+    },
     {"name": "Medusa", "price": Decimal("145.0"), "size": "Large", "key": "EW1"},
-    {"name": "Chimera", "price": Decimal("160.0"), "size": "Large", "key": "Aryx_CargoPlane1"},
-    {"name": "Strike Raptor", "price": Decimal("200.0"), "size": "Large", "key": "Aryx_F22E_StrikeRaptor"},
-    {"name": "Darkreach", "price": Decimal("225.0"), "size": "Large", "key": "Darkreach"},
-    {"name": "Eclipse", "price": Decimal("270.0"), "size": "Medium", "key": "Aryx_Interceptor1"},
-    {"name": "Alkyon", "price": Decimal("390.0"), "size": "Large", "key": "FastBomber1"},
+    {
+        "name": "Chimera",
+        "price": Decimal("160.0"),
+        "size": "Large",
+        "key": "Aryx_CargoPlane1",
+    },
+    {
+        "name": "Strike Raptor",
+        "price": Decimal("200.0"),
+        "size": "Large",
+        "key": "Aryx_F22E_StrikeRaptor",
+    },
+    {
+        "name": "Darkreach",
+        "price": Decimal("225.0"),
+        "size": "Large",
+        "key": "Darkreach",
+    },
+    {
+        "name": "Eclipse",
+        "price": Decimal("270.0"),
+        "size": "Medium",
+        "key": "Aryx_Interceptor1",
+    },
+    {
+        "name": "Alkyon",
+        "price": Decimal("390.0"),
+        "size": "Large",
+        "key": "FastBomber1",
+    },
 ]
 
 # Airbase data copied from the supplied mission.
@@ -407,10 +481,7 @@ def purchase_aircraft(budget, airbase_size):
         purchases[key] = purchases.get(key, 0) + 1
         remaining_budget -= aircraft["price"]
 
-    supplies = [
-        {"UnitType": key, "Count": count}
-        for key, count in purchases.items()
-    ]
+    supplies = [{"UnitType": key, "Count": count} for key, count in purchases.items()]
 
     return supplies, remaining_budget, purchases
 
@@ -427,17 +498,25 @@ def randomize_environment(environment):
     environment["moonPhase"] = round(random.uniform(0.0, 28.0), 1)
 
 
-def create_mission():
-    budget = get_budget()
+def generate_mission(budget, *, overwrite=True, verbose=True):
+    """
+    Generate a random mission for the given enemy budget (in millions).
+
+    budget: numeric or Decimal enemy budget in millions.
+    overwrite: when True, overwrite existing mission files without prompting.
+               When False, prompt the user before overwriting.
+    verbose: when True, print a summary of the generated mission.
+
+    Returns True when a mission was written, False if it was cancelled.
+    """
+    budget = Decimal(str(budget))
 
     # Select a large airbase for the player.
     large_airbases = [base for base in AIRBASES if base["_size"] == "Large"]
     player_airbase = random.choice(large_airbases)
 
     # Select any different airbase for the enemy.
-    enemy_candidates = [
-        base for base in AIRBASES if base is not player_airbase
-    ]
+    enemy_candidates = [base for base in AIRBASES if base is not player_airbase]
     enemy_airbase = random.choice(enemy_candidates)
 
     # Copy only the selected airbases and assign their factions.
@@ -446,11 +525,7 @@ def create_mission():
         (player_airbase, "Boscali"),
         (enemy_airbase, "Primeva"),
     ):
-        base = {
-            key: value
-            for key, value in source_base.items()
-            if key != "_size"
-        }
+        base = {key: value for key, value in source_base.items() if key != "_size"}
         base["faction"] = faction
         selected_airbases.append(base)
 
@@ -474,8 +549,7 @@ def create_mission():
 
     # Make the objectives match the randomly selected airbases.
     objectives_by_name = {
-        objective["UniqueName"]: objective
-        for objective in mission["objectives"]
+        objective["UniqueName"]: objective for objective in mission["objectives"]
     }
 
     objectives_by_name["CaptureAirbase"]["targetAirbases"] = [
@@ -493,13 +567,21 @@ def create_mission():
     mission_path = output_folder / MISSION_FILE_NAME
     meta_path = output_folder / META_FILE_NAME
 
-    if output_folder.exists() and (mission_path.exists() or meta_path.exists()):
-        overwrite = input(
-            f"{output_folder} already contains mission files. Overwrite them? (y/n): "
-        ).strip().lower()
-        if overwrite != "y":
+    if (
+        not overwrite
+        and output_folder.exists()
+        and (mission_path.exists() or meta_path.exists())
+    ):
+        answer = (
+            input(
+                f"{output_folder} already contains mission files. Overwrite them? (y/n): "
+            )
+            .strip()
+            .lower()
+        )
+        if answer != "y":
             print("Mission generation cancelled.")
-            return
+            return False
 
     output_folder.mkdir(parents=True, exist_ok=True)
 
@@ -511,22 +593,30 @@ def create_mission():
 
     total_spent = budget - remaining_budget
 
-    print("\nMission generated successfully.")
-    print(f"Output folder: {output_folder}")
-    print(f"Boscali airbase: {player_airbase['UniqueName']} (Large)")
-    print(
-        f"Primeva airbase: {enemy_airbase['UniqueName']} "
-        f"({enemy_airbase['_size']})"
-    )
-    print(f"Enemy budget: ${budget} million")
-    print(f"Aircraft spending: ${total_spent} million")
-    print(f"Remaining budget: ${remaining_budget} million")
-    print("\nPrimeva aircraft:")
-    if supplies:
-        for item in supplies:
-            print(f"  {item['UnitType']}: {item['Count']}")
-    else:
-        print("  No aircraft purchased.")
+    if verbose:
+        print("\nMission generated successfully.")
+        print(f"Output folder: {output_folder}")
+        print(f"Boscali airbase: {player_airbase['UniqueName']} (Large)")
+        print(
+            f"Primeva airbase: {enemy_airbase['UniqueName']} ({enemy_airbase['_size']})"
+        )
+        print(f"Enemy budget: ${budget} million")
+        print(f"Aircraft spending: ${total_spent} million")
+        print(f"Remaining budget: ${remaining_budget} million")
+        print("\nPrimeva aircraft:")
+        if supplies:
+            for item in supplies:
+                print(f"  {item['UnitType']}: {item['Count']}")
+        else:
+            print("  No aircraft purchased.")
+
+    return True
+
+
+def create_mission():
+    """Interactive entry point: prompt for the budget, then generate a mission."""
+    budget = get_budget()
+    generate_mission(budget, overwrite=False, verbose=True)
 
 
 if __name__ == "__main__":
